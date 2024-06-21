@@ -12,6 +12,7 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: ${{ vars.ENVIRONMENT }}
 
     env:
       ENVIRONMENT: ${{ vars.ENVIRONMENT }}
@@ -20,17 +21,25 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
+
+      - name: Debug environment variables
+        run: |
+          echo "ENVIRONMENT: ${{ vars.ENVIRONMENT }}"
+          echo "USERNAME: ${{ vars.USERNAME }}"
+          # Avoid printing sensitive information
+          echo "PASSWORD is set"
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flake8 pytest
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
       - name: Test with pytest --pylint --cov
         run: |
-          echo "ENVIRONMENT: ${{ vars.ENVIRONMENT }}"
-          echo "USERNAME: ${{ vars.USERNAME }}"
           pytest --pylint --cov
