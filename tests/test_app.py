@@ -12,7 +12,7 @@ def test_app_start(monkeypatch):
     current_env = app.get_environment_variable('ENVIRONMENT')
     current_user = app.get_environment_variable('USERNAME')
     assert current_env in ['DEV', 'PROD'], f"Invalid ENVIRONMENT: {current_env}"
-    assert current_user in ['jderik-local', 'jderik-dev', 'jderk-prod'], f"Invalid USERNAME: {current_user}"
+    assert current_user in ['jderik-local', 'jderik-dev', 'jderik-prod'], f"Invalid USERNAME: {current_user}"
     with pytest.raises(SystemExit) as e:
         app.start()
     assert e.type == SystemExit
