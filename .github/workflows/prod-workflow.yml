@@ -2,29 +2,17 @@ name: Advanced Python Calculator
 
 on:
   push:
-    branches: [ "master", "develop" ]
+    branches: [ "master"]
   pull_request:
-    branches: [ "master", "develop" ]
+    branches: [ "master"]
 
 permissions:
   contents: read
 
 jobs:
-  set-environment: #this is a job named 'set-environment'
-    runs-on: ubuntu-latest #your preferred OS
-    steps:
-      - name: Check if prod
-        if: endsWith(github.ref, '/master') #if the triggering branch is 'master'
-        run: |
-          echo "ENVIRONMENT=PROD" >> $GITHUB_ENV
-      - name: Check if dev
-        if: endsWith(github.ref, '/develop') #if the triggering branch is 'dev'
-        run: |
-          echo "ENVIRONMENT=DEV" >> $GITHUB_ENV
-
   build:
     runs-on: ubuntu-latest
-    environment: $GITHUB_ENV
+    environment: PROD
 
     env:
       ENVIRONMENT: ${{ vars.ENVIRONMENT }}
