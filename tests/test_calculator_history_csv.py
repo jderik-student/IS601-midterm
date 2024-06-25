@@ -17,8 +17,7 @@ from app.calculator.operations import add, divide, multiply, subtract
 @pytest.fixture(scope="session", autouse=True)
 def setup_calc_history_path_location():
     """Sets up the csv files needed to run the tests"""
-    absolute_path = os.path.abspath("tests")
-    singleton.calc_history_path_location = os.path.join(absolute_path, "csv_test_data_output.csv")
+    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
     yield
 
     if os.path.exists(singleton.calc_history_path_location):
