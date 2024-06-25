@@ -76,7 +76,7 @@ def test_get_ith_calculation(setup):
 
 def test_load_from_csv(setup):
     """Tests that the CalculatorHistory is properly populated from a csv file"""
-    CalculatorHistory.load_history_from_csv(os.path.abspath("tests/csv_test_data_read_input.csv"))
+    CalculatorHistory.load_history_from_csv("tests/csv_test_data_read_input.csv")
     first_calculation = CalculatorHistory.get_ith_calculation(0)
     second_calculation = CalculatorHistory.get_ith_calculation(1)
     third_calculation = CalculatorHistory.get_ith_calculation(2)
