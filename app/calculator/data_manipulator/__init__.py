@@ -1,4 +1,6 @@
-"""Temp Doc String"""
+"""
+    This Strategy interface declares operations relating to manipulating data stored in different locations
+"""
 from abc import ABC, abstractmethod
 
 class DataManipulationStrategy(ABC):
@@ -8,8 +10,8 @@ class DataManipulationStrategy(ABC):
 
     @abstractmethod
     def append(self,entry):
-        """Temp Doc String"""
+        """Abstract method to append calculations to a specific data location"""
 
     @abstractmethod
     def clear_database(self):
-        """Temp Doc String"""
+        """Abstract method to delete the data stored at the specific location"""
