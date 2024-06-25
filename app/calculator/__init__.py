@@ -6,6 +6,9 @@
 from decimal import Decimal
 from typing import Callable
 from app.calculator.calculation import Calculation
+from app.calculator.calculator_history import CalculatorHistory
+from app.calculator.data_manipulator.dataframe_data_manipulator import DataframeManipulator
+from app.calculator.data_manipulator.memory_data_manipulator import MemoryDataManipulator
 from app.calculator.operations import add, subtract, multiply, divide
 
 class Calculator:
@@ -18,7 +21,7 @@ class Calculator:
     def _perform_calculation(a: Decimal, b: Decimal, operation: Callable[[Decimal, Decimal], Decimal]) -> Decimal:
         """
             Creates an instance of Calculation object based on the two Decimals and operation function given.
-            Appends the created Calculation to the Calcultor's history.
+            Appends the created Calculation to the Calcultor's history list, dataframe, and csv file.
             Computes the calculation and returns the Decimal value. 
 
             @param a: the first Decimal number to be used in the calculation
@@ -27,6 +30,8 @@ class Calculator:
             @return: the Decimal value of the computed calculation 
         """
         calculation = Calculation.create(a, b, operation)
+        CalculatorHistory.append(calculation, MemoryDataManipulator())
+        CalculatorHistory.append(calculation, DataframeManipulator())
         return calculation.calculate()
 
     @staticmethod
