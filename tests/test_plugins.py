@@ -1,4 +1,4 @@
-# pylint: disable=unnecessary-dunder-call, invalid-name, unused-variable, unused-argument, line-too-long
+# pylint: disable=unnecessary-dunder-call, invalid-name, unused-variable, unused-argument, line-too-long, duplicate-code
 '''
     This file contains tests to test the all the Commands in the commands directory except the ExitCommand which is tested in test_app.py
 '''
