@@ -6,9 +6,7 @@
 
 from decimal import Decimal
 from typing import List
-
 import pandas as pd
-
 import singleton
 from app.calculator.calculation import Calculation
 from app.calculator.data_manipulator import DataManipulationStrategy
@@ -101,3 +99,9 @@ class CalculatorHistory:
         cls.history = hist
         df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
 
+    @classmethod
+    def save_to_csv(cls, file_path):
+        """
+            Saves the stored dataframe to the specified csv file
+        """
+        cls.dataframe.to_csv(file_path, mode= "w", index=  False, header = True)

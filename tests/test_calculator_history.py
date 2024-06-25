@@ -1,4 +1,4 @@
-# pylint: disable=unnecessary-dunder-call, invalid-name, unused-argument, line-too-long
+# pylint: disable=unnecessary-dunder-call, invalid-name, unused-argument, line-too-long, duplicate-code
 '''
     This file contains tests to test the CalculationHistory class (Core functionality and the MemoryDataManipulator)
 '''
