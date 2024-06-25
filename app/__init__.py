@@ -9,12 +9,17 @@ import logging.config
 import os
 import sys
 from dotenv import load_dotenv
+import singleton
+
 
 class App:
     '''
         The Application is a REPL defined to be an interactive calculator
     '''
     def __init__(self): # Constructor
+        '''
+            Initializes the logging, environment variables, directory, and files needed to run this application
+        '''
         os.makedirs('logs', exist_ok=True)
         self.configure_logging()
         load_dotenv()
@@ -25,6 +30,27 @@ class App:
             for handler in logger.handlers:
                 handler.setLevel(logging.DEBUG)
             logging.debug("Logging level set to DEBUG")
+        data_dir = os.path.join(os.getcwd(), 'data')
+        if not os.path.exists(data_dir):
+            os.makedirs(data_dir)
+            logging.info("The directory '%s is created", data_dir)
+
+        elif not os.access(data_dir, os.W_OK):
+            logging.error("The directory '%s' is not writable.", data_dir)
+            sys.exit("Exiting: The directory '%s' is not writable.", data_dir)
+
+        calc_history_file = self.get_environment_variable('CSVFILENAME')
+        path_abs_hist_folder = os.path.abspath(data_dir)
+        path_abs_hist_file = os.path.join(path_abs_hist_folder, calc_history_file)
+        singleton.calc_history_path_location = path_abs_hist_file
+        logging.debug("Calculator History File Absolute Path: %s", path_abs_hist_file)
+
+        if not os.path.exists(singleton.calc_history_path_location):
+            with open(singleton.calc_history_path_location,encoding="utf-8", mode='w') as file:
+                file.write("Operand1,Operand2,Operation")
+                logging.info("Calculator History csv created at %s", singleton.calc_history_path_location)
+        else:
+            logging.info("Calculator History csv exists at %s", singleton.calc_history_path_location)
 
     def configure_logging(self):
         '''
@@ -56,11 +82,9 @@ class App:
 
     def start(self):
         '''
-            Loads environment variables, configues logging, then exits
+            Starts app then exits
         '''
-        # Register commands here
         logging.info("Application Started")
-
 
         logging.info("Application Exiting.")
         sys.exit("Exiting...")
