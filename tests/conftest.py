@@ -9,7 +9,7 @@
 
 from decimal import Decimal
 from faker import Faker
-from app.calculator.operations import add, subtract, multiply, divide
+import singleton
 
 fake = Faker()
 
@@ -19,18 +19,12 @@ def generate_test_data(num_records):
 
         @param num_records: the specified number of randomized test data sets to produce
     """
-    operation_mappings = {
-        'add': add,
-        'subtract': subtract,
-        'multiply': multiply,
-        'divide': divide
-    }
 
     for _ in range(num_records):
         a = Decimal(fake.random_number(digits=2))
         b = Decimal(fake.random_number(digits=2))
-        operation_name = fake.random_element(elements=list(operation_mappings.keys()))
-        operation_func = operation_mappings[operation_name]
+        operation_name = fake.random_element(elements=list(singleton.operation_mappings.keys()))
+        operation_func = singleton.operation_mappings[operation_name]
 
         if operation_func.__name__ == "divide":
             b = Decimal('1') if b == Decimal('0')  else b
