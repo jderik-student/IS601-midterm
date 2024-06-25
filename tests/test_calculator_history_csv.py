@@ -14,7 +14,7 @@ from app.calculator.data_manipulator.dataframe_data_manipulator import Dataframe
 from app.calculator.operations import add, divide, multiply, subtract
 
 
-@pytest.fixture(scope="session", autouse=True)
+@pytest.fixture(scope="class", autouse=True)
 def setup_calc_history_path_location():
     """Sets up the csv files needed to run the tests"""
     singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
