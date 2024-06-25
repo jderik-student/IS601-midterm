@@ -3,7 +3,6 @@
     This file contains tests to test the CalculationHistory class (Core functionality and the MemoryDataManipulator)
 '''
 
-import os
 from decimal import Decimal
 import pandas as pd
 import pytest
