@@ -47,7 +47,10 @@ def test_app_get_environment_variable():
 @pytest.fixture(scope="class", autouse=True)
 def setup():
     """Sets up the test_app_full_workflow test"""
-    singleton.calc_history_path_location = "data/calc_history.csv"
+    data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data'))
+    if not os.path.exists(data_dir):
+        os.makedirs(data_dir)
+    singleton.calc_history_path_location = os.path.join(data_dir, "calc_history.csv")
     with open(singleton.calc_history_path_location, encoding="utf-8", mode='w') as file:
         file.write("Operand1,Operand2,Operation\n1,2,add\n3,4,subtract")
     yield
