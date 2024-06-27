@@ -18,10 +18,4 @@ class LoadHistoryCommand(Command):
 
             @param user_input: csv file to load history from
         """
-        try:
-            CalculatorHistory.load_history_from_csv(user_input[0])
-            logging.debug("History Loaded from %s", user_input[0])
-            print(f"History Loaded from {user_input[0]}")
-        except KeyError as e:
-            print(f"CSV Invalid Format | Column Not Found: {e}")
-            logging.error("CSV Invalid Format | Column Not Found: %s", e)
+        CalculatorHistory.load_history_from_csv(user_input[0])

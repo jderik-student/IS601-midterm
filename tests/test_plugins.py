@@ -14,7 +14,9 @@ from app.calculator.calculator_history import CalculatorHistory
 from app.commands import CommandHandler
 from app.plugins.add import AddCommand
 from app.plugins.clearHistory import ClearHistoryCommand
+from app.plugins.deleteCalculation import DeleteCalculationCommand
 from app.plugins.divide import DivideCommand
+from app.plugins.getCalculation import GetCalculationCommand
 from app.plugins.loadHistory import LoadHistoryCommand
 from app.plugins.menu import MenuCommand
 from app.plugins.multiply import MultiplyCommand
@@ -69,6 +71,32 @@ def test_print_history_command(capfd):
     out, err = capfd.readouterr()
     assert out == "1) Calculation(1, 2, add)\n2) Calculation(3, 2, subtract)\n3) Calculation(2, 4, multiply)\n4) Calculation(12, 4, divide)\n", "The GetHistoryCommand should've printed 4 Calculations"
 
+def test_get_calculation_command(capfd):
+    """Tests the PrintHistoryCommand"""
+    command = GetCalculationCommand()
+    command.execute([1])
+    out, err = capfd.readouterr()
+    assert out == "The result of Calculation(1, 2, add) is equal to 3\n", "The GetCalculationCommand should've printed 'The result of Calculation(1, 2, add) is equal to 3'"
+    command.execute([100])
+    out, err = capfd.readouterr()
+    assert out == "Invalid Calculation Number: 100\n", "The GetCalculationCommand should've printed 'Invalid Calculation Number: 100'"
+    command.execute(["a"])
+    out, err = capfd.readouterr()
+    assert "ValueError" in out, "The GetCalculationCommand should have got a ValueError"
+
+def test_delete_calculation_command(capfd):
+    """Tests the PrintHistoryCommand"""
+    command = DeleteCalculationCommand()
+    command.execute([1])
+    out, err = capfd.readouterr()
+    assert out == "Calculation #1 was deleted\n", "The GetCalculationCommand should've printed 'The result of Calculation(1, 2, add) is equal to 3'"
+    command.execute([100])
+    out, err = capfd.readouterr()
+    assert out == "Invalid Calculation Number: 100\n", "The GetCalculationCommand should've printed 'Invalid Calculation Number: 100'"
+    command.execute(["a"])
+    out, err = capfd.readouterr()
+    assert "a is not a valid number\n" == out, "The GetCalculationCommand should've printed 'a is not a valid number'"
+
 def test_clear_history_command(capfd):
     """Tests the ClearHistoryCommand"""
     command = ClearHistoryCommand()
@@ -84,7 +112,7 @@ def test_load_history_command(capfd):
     command = LoadHistoryCommand()
     command.execute(["tests/csv_test_data_read_input.csv"])
     out, err = capfd.readouterr()
-    assert out == "History Loaded from tests/csv_test_data_read_input.csv\n", "The ClearHistoryCommand should have been deleted the history"
+    assert out == "History loaded from tests/csv_test_data_read_input.csv\n", "The LoadHistoryCommand should have been loaded the history"
     df = CalculatorHistory.get_dataframe()
     first_calculation = df.iloc[0]
     second_calculation = df.iloc[1]

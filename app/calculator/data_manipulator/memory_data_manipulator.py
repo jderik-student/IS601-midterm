@@ -20,3 +20,9 @@ class MemoryDataManipulator(DataManipulationStrategy):
             Deletes all calculations in the CalculatorHistory history list
         '''
         CalculatorHistory.get_history().clear()
+
+    def delete_entry_at_index(self, index):
+        '''
+            Deletes the Calculation at the specified index in the CalculatorHistory history list
+        '''
+        CalculatorHistory.get_history().pop(index)

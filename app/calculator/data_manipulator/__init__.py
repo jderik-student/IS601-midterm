@@ -14,4 +14,8 @@ class DataManipulationStrategy(ABC):
 
     @abstractmethod
     def clear_database(self):
-        """Abstract method to delete the data stored at the specific location"""
+        """Abstract method to delete all data stored at the specific location"""
+
+    @abstractmethod
+    def delete_entry_at_index(self, index):
+        """Abstract method to delete the entry stored at the specific index"""

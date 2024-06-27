@@ -45,6 +45,13 @@ def test_get_history(setup):
     """Test getting the entire calculation history"""
     assert len(CalculatorHistory.get_history()) == 4, "History list does not contain the expected number of calculations (4)"
 
+def test_delete_calculation_at_index(setup):
+    """Test getting the entire calculation history"""
+    CalculatorHistory.delete_calculation_at_index(1, MemoryDataManipulator())
+    second_calculation = CalculatorHistory.get_ith_calculation(1)
+    assert len(CalculatorHistory.get_history()) == 3, "History list does not contain the expected number of calculations (3)"
+    assert second_calculation.a == Decimal('5') and second_calculation.b == Decimal('6') and second_calculation.operation.__name__ == "multiply", "Failed to delete the correct Calculation in history list"
+
 def test_delete_history(setup):
     """Test deleting the entire calculation history"""
     CalculatorHistory.delete_history(MemoryDataManipulator())

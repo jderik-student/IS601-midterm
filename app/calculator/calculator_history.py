@@ -5,6 +5,7 @@
 """
 
 from decimal import Decimal
+import logging
 from typing import List
 import pandas as pd
 import singleton
@@ -66,6 +67,13 @@ class CalculatorHistory:
         dataManipulationStrategy.clear_database()
 
     @classmethod
+    def delete_calculation_at_index(cls, index, dataManipulationStrategy: DataManipulationStrategy):
+        """
+           Clears the Calculation at the specified index in the history list, dataframe, and in the csv file
+        """
+        dataManipulationStrategy.delete_entry_at_index(index=index)
+
+    @classmethod
     def find_by_opreation(cls, operation_name: str) -> List[Calculation]:
         """
            Finds and returns a list of all the Calculations with a specific operation
@@ -92,12 +100,23 @@ class CalculatorHistory:
         """
         hist = []
         df = pd.read_csv(file_path)
-        for _, row in df.iterrows():
-            calc = Calculation.create(Decimal(row["Operand1"]), Decimal(row["Operand2"]), singleton.operation_mappings[row["Operation"]])
-            hist.append(calc)
-        cls.dataframe = df
-        cls.history = hist
-        df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+        try:
+            for _, row in df.iterrows():
+                calc = Calculation.create(Decimal(row["Operand1"]), Decimal(row["Operand2"]), singleton.operation_mappings[row["Operation"]])
+                hist.append(calc)
+            cls.dataframe = df
+            cls.history = hist
+            df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+            print(f"History loaded from {file_path}")
+            logging.info("History loaded from %s", file_path)
+        except KeyError as e:
+            print(f"Failed to load history from {file_path}")
+            logging.error("Failed to load history from %s", file_path)
+            print(f"CSV Invalid Format | Column Not Found {e}")
+            logging.error("CSV Invalid Format | Column Not Found %s", e)
+        except Exception as e:
+            print(f"Failed to load history from {file_path}")
+            logging.error("Failed to load history from %s | Error %s", file_path, e)
 
     @classmethod
     def save_to_csv(cls, file_path):
