@@ -34,7 +34,6 @@ def setup_calc_history_path_location():
     if os.path.exists(singleton.calc_history_path_location):
         os.remove(singleton.calc_history_path_location)
 
-
 def test_add_command(capfd):
     """Tests the AddCommand"""
     command = AddCommand()
