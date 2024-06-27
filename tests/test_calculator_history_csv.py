@@ -1,4 +1,4 @@
-# pylint: disable=unnecessary-dunder-call, invalid-name, unused-argument
+# pylint: disable=unnecessary-dunder-call, invalid-name, unused-argument, line-too-long
 '''
     This file contains tests to test the CalculationHistory class
 '''
@@ -56,6 +56,18 @@ def test_get_history(setup):
     assert len(CalculatorHistory.get_dataframe()) == 4, "Dataframe does not contain the expected number of calculations (4)"
     df = pd.read_csv(singleton.calc_history_path_location, header=0)
     assert len(df) == 4, "csv does not contain the expected number of calculations (4)"
+
+def test_delete_calculation_at_index(setup):
+    """Test getting the entire calculation history"""
+    CalculatorHistory.delete_calculation_at_index(1, DataframeManipulator())
+    df = CalculatorHistory.get_dataframe()
+    second_calculation = df.iloc[1]
+    assert len(df) == 3, "Dataframe does not contain the expected number of calculations (3)"
+    assert second_calculation["Operand1"] == Decimal('5') and second_calculation["Operand2"] == Decimal('6') and second_calculation["Operation"] == "multiply", "Failed to delete the correct Calculation in dataframe"
+    df = pd.read_csv(singleton.calc_history_path_location, header=0)
+    second_calculation = df.iloc[1]
+    assert len(df) == 3, "Csv does not contain the expected number of calculations (3)"
+    assert second_calculation["Operand1"] == Decimal('5') and second_calculation["Operand2"] == Decimal('6') and second_calculation["Operation"] == "multiply", "Failed to delete the correct Calculation in csv"
 
 def test_delete_history(setup):
     """Test deleting the entire calculation history"""

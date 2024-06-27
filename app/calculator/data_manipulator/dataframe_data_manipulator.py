@@ -26,3 +26,13 @@ class DataframeManipulator(DataManipulationStrategy):
         df = CalculatorHistory.get_dataframe()
         df.drop(df.index, inplace=True)
         df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+
+    def delete_entry_at_index(self, index):
+        '''
+            Deletes the Calculation at the specified index in the CalculatorHistory dataframe and the associated csv file
+            Then resets the indices
+        '''
+        df = CalculatorHistory.get_dataframe()
+        df.drop(index=index, inplace=True)
+        df.reset_index(inplace=True)
+        df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
