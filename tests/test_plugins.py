@@ -9,14 +9,14 @@ from decimal import Decimal
 import pandas as pd
 import pytest
 
-from app.plugins.deleteCalculation import DeleteCalculationCommand
-from app.plugins.getCalculation import GetCalculationCommand
 import singleton
 from app.calculator.calculator_history import CalculatorHistory
 from app.commands import CommandHandler
 from app.plugins.add import AddCommand
 from app.plugins.clearHistory import ClearHistoryCommand
+from app.plugins.deleteCalculation import DeleteCalculationCommand
 from app.plugins.divide import DivideCommand
+from app.plugins.getCalculation import GetCalculationCommand
 from app.plugins.loadHistory import LoadHistoryCommand
 from app.plugins.menu import MenuCommand
 from app.plugins.multiply import MultiplyCommand
