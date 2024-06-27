@@ -4,6 +4,7 @@
 '''
 
 from decimal import Decimal
+import os
 import pandas as pd
 import pytest
 import singleton
@@ -13,7 +14,6 @@ from app.calculator.data_manipulator.memory_data_manipulator import \
     MemoryDataManipulator
 from app.calculator.operations import add, divide, multiply, subtract
 
-
 @pytest.fixture(name="setup")
 def setup_history():
     """First clears the history and setups the history for each test"""
@@ -22,6 +22,11 @@ def setup_history():
     CalculatorHistory.append(Calculation.create(Decimal('3'), Decimal('4'), subtract), MemoryDataManipulator())
     CalculatorHistory.append(Calculation.create(Decimal('5'), Decimal('6'), multiply), MemoryDataManipulator())
     CalculatorHistory.append(Calculation.create(Decimal('7'), Decimal('8'), divide), MemoryDataManipulator())
+    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
+    yield
+
+    if os.path.exists(singleton.calc_history_path_location):
+        os.remove(singleton.calc_history_path_location)
 
 def test_append(setup):
     """Test appending a Calculation to the history list"""
@@ -51,11 +56,6 @@ def test_delete_calculation_at_index(setup):
     second_calculation = CalculatorHistory.get_ith_calculation(1)
     assert len(CalculatorHistory.get_history()) == 3, "History list does not contain the expected number of calculations (3)"
     assert second_calculation.a == Decimal('5') and second_calculation.b == Decimal('6') and second_calculation.operation.__name__ == "multiply", "Failed to delete the correct Calculation in history list"
-
-def test_delete_history(setup):
-    """Test deleting the entire calculation history"""
-    CalculatorHistory.delete_history(MemoryDataManipulator())
-    assert len(CalculatorHistory.get_history()) == 0, "Failed to delete history list"
 
 def test_find_by_operation(setup):
     """Test getting the history by each opearation"""
@@ -101,3 +101,8 @@ def test_load_from_csv(setup):
     assert third_calculation["Operand1"] == Decimal('5') and third_calculation["Operand2"] == Decimal('6') and third_calculation["Operation"] == "multiply", "Failed to load Calculation at row 3 of the dataframe"
     assert fourth_calculation["Operand1"] == Decimal('7') and fourth_calculation["Operand2"] == Decimal('8') and fourth_calculation["Operation"] == "divide", "Failed to load Calculation at row 4 of the dataframe"
     assert pd.read_csv("tests/csv_test_data_read_input.csv").equals(pd.read_csv(singleton.calc_history_path_location)), "Calc_history.csv write failed"
+
+def test_delete_history(setup):
+    """Test deleting the entire calculation history"""
+    CalculatorHistory.delete_history(MemoryDataManipulator())
+    assert len(CalculatorHistory.get_history()) == 0, "Failed to delete history list"

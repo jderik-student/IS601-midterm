@@ -79,13 +79,14 @@ class CommandHandler:
             self.commands[user_input[0]].execute(user_input[1:3])
             logging.info("Command called %s with arguments %s", user_input[0], ic.format(user_input[1:]))
         except IndexError:
-            print("ERROR Usage: <operation> <number1> <number2>")
+            print("Invalid number of arguments for specified command")
             logging.error("Index Error | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))
         except ValueError:
             print("Cannot divide by zero")
             logging.error("Value Error | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))
+            logging.warning("Divide by zero added to Calculator History")
         except InvalidOperation:
-            print(f"Invalid number input: {user_input[1]} or {user_input[2]} is not a valid number.")
+            print(f"Invalid number input: one of {user_input[1:3]} is not a valid number.")
             logging.error("InvalidOperation | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))
         except KeyError:
             print(f"No such command: {user_input[0]}")
