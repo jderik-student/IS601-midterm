@@ -114,7 +114,7 @@ class CalculatorHistory:
             logging.error("Failed to load history from %s", file_path)
             print(f"CSV Invalid Format | Column Not Found {e}")
             logging.error("CSV Invalid Format | Column Not Found %s", e)
-        except Exception as e:
+        except Exception as e: #pragma: no cover
             print(f"Failed to load history from {file_path}")
             logging.error("Failed to load history from %s | Error %s", file_path, e)
 

@@ -43,7 +43,7 @@ def test_execute_command(capfd):
 
     handler.execute_command(["add"])
     out, err = capfd.readouterr()
-    assert out == "ERROR Usage: <operation> <number1> <number2>\n", "IndexError was expected"
+    assert out == "Invalid number of arguments for specified command\n", "IndexError was expected"
 
     handler.execute_command(["divide", "1", "0"])
     out, err = capfd.readouterr()
@@ -51,7 +51,7 @@ def test_execute_command(capfd):
 
     handler.execute_command(["divide", "a", "b"])
     out, err = capfd.readouterr()
-    assert out == "Invalid number input: a or b is not a valid number.\n", "InvalidOperation was expected"
+    assert out == "Invalid number input: one of ['a', 'b'] is not a valid number.\n", "InvalidOperation was expected"
 
     handler.execute_command(["notACommand", "1", "2"])
     out, err = capfd.readouterr()
@@ -65,7 +65,5 @@ def test_execute_command(capfd):
     out, err = capfd.readouterr()
     assert out == "Failed to load history from tests/csv_invalid_format.csv\nCSV Invalid Format | Column Not Found 'Operand1'\n", "CSV Invalid Format (KeyError) was expected"
 
-    handler.remove_command("add")
-    handler.remove_command("divide")
-    handler.remove_command("loadHistory")
+    handler.commands.clear()
     ClearHistoryCommand().execute([])

@@ -3,9 +3,20 @@
     This file contains tests to test the Calculator
 '''
 
+import os
 import pytest
+import singleton
 from app.calculator import Calculator
 
+
+@pytest.fixture(scope="class", autouse=True)
+def setup_calc_history_path_location():
+    """Sets up the csv files needed to run the tests"""
+    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
+    yield
+
+    if os.path.exists(singleton.calc_history_path_location):
+        os.remove(singleton.calc_history_path_location)
 
 def test_add():
     '''Test that addition function works '''    

@@ -26,7 +26,7 @@ class GetCalculationCommand(Command):
             calculation = CalculatorHistory.get_ith_calculation(index)
             result = calculation.calculate()
             logging.debug("The result of %s is equal to %s", calculation, result)
-            print(f"The result of {calculation} is equal to {result}")         
+            print(f"The result of {calculation} is equal to {result}")
         except IndexError:
             print(f"Invalid Calculation Number: {user_input[0]}")
             logging.error("IndexError: Failed to delete calculation at index: %s", index)
