@@ -107,6 +107,13 @@ class CalculatorHistory:
             cls.dataframe = df
             cls.history = hist
             df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+            print(f"History loaded from {file_path}")
+            logging.info("History loaded from %s", file_path)
+        except KeyError as e:
+            print(f"Failed to load history from {file_path}")
+            logging.error("Failed to load history from %s", file_path)
+            print(f"CSV Invalid Format | Column Not Found {e}")
+            logging.error("CSV Invalid Format | Column Not Found %s", e)
         except Exception as e:
             print(f"Failed to load history from {file_path}")
             logging.error("Failed to load history from %s | Error %s", file_path, e)

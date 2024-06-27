@@ -112,7 +112,7 @@ def test_load_history_command(capfd):
     command = LoadHistoryCommand()
     command.execute(["tests/csv_test_data_read_input.csv"])
     out, err = capfd.readouterr()
-    assert out == "History Loaded from tests/csv_test_data_read_input.csv\n", "The ClearHistoryCommand should have been deleted the history"
+    assert out == "History loaded from tests/csv_test_data_read_input.csv\n", "The LoadHistoryCommand should have been loaded the history"
     df = CalculatorHistory.get_dataframe()
     first_calculation = df.iloc[0]
     second_calculation = df.iloc[1]

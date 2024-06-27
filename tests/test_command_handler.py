@@ -63,7 +63,7 @@ def test_execute_command(capfd):
 
     handler.execute_command(["loadHistory", "tests/csv_invalid_format.csv"])
     out, err = capfd.readouterr()
-    assert out == "CSV Invalid Format | Column Not Found: 'Operand1'\n", "CSV Invalid Format (KeyError) was expected"
+    assert out == "Failed to load history from tests/csv_invalid_format.csv\nCSV Invalid Format | Column Not Found 'Operand1'\n", "CSV Invalid Format (KeyError) was expected"
 
     handler.remove_command("add")
     handler.remove_command("divide")
