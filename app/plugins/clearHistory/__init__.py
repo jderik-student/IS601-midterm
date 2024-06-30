@@ -25,3 +25,11 @@ class ClearHistoryCommand(Command):
         logging.debug("History list cleared")
         CalculatorHistory.delete_history(MemoryDataManipulator())
         print("History Cleared")
+
+    def __repr__(self):
+        """
+            String representation of how to use the ClearHistory Command
+
+            @return: String representation how to use the ClearHistory Command
+        """
+        return "clearHistory"

@@ -23,3 +23,11 @@ class SubtractCommand(Command):
         result = Calculator.subtract(operand_1, operand_2)
         logging.debug("The result of %s minus %s is equal to %s", operand_1, operand_2, result)
         print(f"The result of {operand_1} minus {operand_2} is equal to {result}")
+
+    def __repr__(self):
+        """
+            String representation of how to use the Sutract Command
+
+            @return: String representation how to use the Sutract Command
+        """
+        return "sutract <operand1> <operand2>"

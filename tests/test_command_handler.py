@@ -29,7 +29,7 @@ def test_register_command_and_list_command(capfd):
     handler = CommandHandler()
     handler.list_commands()
     out, err = capfd.readouterr()
-    assert out == "Commands:\n- add\n", "Did not succesfully register and list out the AddCommand"
+    assert "- add               <operand1>      <operand2>" in out, "Did not succesfully register and list out the AddCommand"
 
 def test_execute_command(capfd):
     """Tests the execute_command method as well as the exceptions it catches"""
@@ -43,7 +43,7 @@ def test_execute_command(capfd):
 
     handler.execute_command(["add"])
     out, err = capfd.readouterr()
-    assert out == "Invalid number of arguments for specified command\n", "IndexError was expected"
+    assert out == "Improper usage of command\nCorrect usage: add <operand1> <operand2>\n", "IndexError was expected"
 
     handler.execute_command(["divide", "1", "0"])
     out, err = capfd.readouterr()

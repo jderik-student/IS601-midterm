@@ -22,3 +22,11 @@ class PrintHistoryCommand(Command):
         for calc in CalculatorHistory.get_history():
             print(f"{i}) {calc}")
             i += 1
+    
+    def __repr__(self):
+        """
+            String representation of how to use the PrintHistory Command
+
+            @return: String representation how to use the PrintHistory Command
+        """
+        return "printHistory"

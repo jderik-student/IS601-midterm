@@ -23,3 +23,11 @@ class MultiplyCommand(Command):
         result = Calculator.multiply(operand_1, operand_2)
         logging.debug("The result of %s times %s is equal to %s", operand_1, operand_2, result)
         print(f"The result of {operand_1} times {operand_2} is equal to {result}")
+
+    def __repr__(self):
+        """
+            String representation of how to use the Multiply Command
+
+            @return: String representation how to use the Multiply Command
+        """
+        return "multiply <operand1> <operand2>"

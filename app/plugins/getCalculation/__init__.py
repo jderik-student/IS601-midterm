@@ -34,3 +34,11 @@ class GetCalculationCommand(Command):
         except ValueError as e:
             print(f"ValueError: {e}")
             logging.error("ValueError: %s", e)
+
+    def __repr__(self):
+        """
+            String representation of how to use the GetCalculation Command
+
+            @return: String representation how to use the GetCalculation Command
+        """
+        return "getCalculation <calculation#>"

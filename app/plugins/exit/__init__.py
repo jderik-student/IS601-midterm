@@ -19,3 +19,11 @@ class ExitCommand(Command):
         """
         logging.debug("User exited App with Exit Command")
         sys.exit("Exiting...")
+
+    def __repr__(self):
+        """
+            String representation of how to use the Exit Command
+
+            @return: String representation how to use the Exit Command
+        """
+        return "exit"

@@ -34,3 +34,11 @@ class DeleteCalculationCommand(Command):
         except ValueError:
             print(f"{user_input[0]} is not a valid number")
             logging.error("ValueError: %s is not a valid number", user_input[0])
+
+    def __repr__(self):
+        """
+            String representation of how to use the DeleteCalculation Command
+
+            @return: String representation how to use the DeleteCalculation Command
+        """
+        return "deleteCalculation <calculation#>"

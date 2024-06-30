@@ -85,8 +85,7 @@ def test_app_full_workflow(capfd, monkeypatch):
 
     expected_output = [
         "History loaded from",
-        "\nCommands:\n- add\n- clearHistory\n- deleteCalculation\n- divide\n- exit\n" \
-        "- getCalculation\n- loadHistory\n- menu\n- multiply\n- printHistory\n- saveHistory\n- subtract\nType 'exit' to exit.\n",
+        "Commands:\n  Command           Parameter 1     Parameter 2\n",
         "1) Calculation(1, 2, add)\n2) Calculation(3, 4, subtract)\n",
         "The result of Calculation(3, 4, subtract) is equal to -1\n",
         "Calculation #1 was deleted\n",
@@ -100,7 +99,7 @@ def test_app_full_workflow(capfd, monkeypatch):
         "",
         "History loaded from tests/csv_test_data_read_input.csv\n",
         f"History Saved to {output_test_file}\n",
-        "Commands:\n- add\n- clearHistory\n- deleteCalculation\n- divide\n- exit\n- getCalculation\n- loadHistory\n- menu\n- multiply\n- printHistory\n- saveHistory\n- subtract\n"
+        "Commands:\n  Command           Parameter 1     Parameter 2\n"
     ]
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))

@@ -152,13 +152,13 @@ def test_save_history_command(capfd):
 def test_menu_command(capfd):
     """Tests the MenuCommand"""
     handler = CommandHandler()
-    handler.register_command("Command1", None)
-    handler.register_command("Command2", None)
-    handler.register_command("Command3", None)
+    handler.register_command("add", AddCommand())
+    handler.register_command("deleteCalculation", DeleteCalculationCommand())
+    handler.register_command("printHistory", PrintHistoryCommand())
     command = MenuCommand(handler)
     command.execute([])
     out, err = capfd.readouterr()
-    assert out == "Commands:\n- Command1\n- Command2\n- Command3\n", "The MenuCommand should have printed three commands"
-    handler.remove_command("Command1")
-    handler.remove_command("Command2")
-    handler.remove_command("Command3")
+    assert "Commands:\n  Command           Parameter 1     Parameter 2\n- add               <operand1>      <operand2>\n- deleteCalculation <calculation#>  \n- printHistory" in out, "The MenuCommand should have printed three commands"
+    handler.remove_command("add")
+    handler.remove_command("deleteCalculation")
+    handler.remove_command("printHistory")
