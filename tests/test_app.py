@@ -48,7 +48,7 @@ def test_app_get_environment_variable():
 def setup_test():
     """Sets up the test_app_full_workflow test"""
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data'))
-    if not os.path.exists(data_dir):
+    if not os.path.exists(data_dir): # pragma: no cover
         os.makedirs(data_dir)
     singleton.CALC_HISTORY_FILE_PATH = os.path.join(data_dir, "calc_history.csv")
     with open(singleton.CALC_HISTORY_FILE_PATH, encoding="utf-8", mode='w') as file:

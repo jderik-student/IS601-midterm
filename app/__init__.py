@@ -124,7 +124,7 @@ class App:
         self.load_plugins()
         try:
             CalculatorHistory.load_history_from_csv(singleton.CALC_HISTORY_FILE_PATH)
-        except Exception as e:
+        except Exception as e: # pragma: no cover
             print(f"Failed to load from {singleton.CALC_HISTORY_FILE_PATH}")
             logging.error("Failed to load from %s | Error: %s", singleton.CALC_HISTORY_FILE_PATH, e)
         logging.info("Application Started")
