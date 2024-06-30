@@ -28,3 +28,11 @@ class MenuCommand(Command):
         """
         logging.debug("Menu Commands: %s", ic.format(self.command_handler.commands))
         self.command_handler.list_commands()
+
+    def __repr__(self):
+        """
+            String representation of how to use the Menu Command
+
+            @return: String representation how to use the Menu Command
+        """
+        return "menu"

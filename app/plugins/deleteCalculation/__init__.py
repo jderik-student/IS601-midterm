@@ -18,7 +18,7 @@ class DeleteCalculationCommand(Command):
         """
             Deletes deletes the specified calculation from the Calculator's history
 
-            @param user_input: listed order number of the calculation to delete (shown after from the printHistory)
+            @param user_input: number of the calculation to delete (shown after from the printHistory)
         """
         try:
             index = int(user_input[0]) - 1
@@ -30,7 +30,15 @@ class DeleteCalculationCommand(Command):
         except KeyError:
             print(f"Invalid Calculation Number: {user_input[0]}")
             logging.error("IndexError: Failed to delete calculation at index: %s", index)
-            logging.debug("Number of Calculations in history: %s", len(CalculatorHistory.get_history()))
+            logging.debug("Number of Calculations in history at time of delete command call: %s", len(CalculatorHistory.get_history()))
         except ValueError:
             print(f"{user_input[0]} is not a valid number")
             logging.error("ValueError: %s is not a valid number", user_input[0])
+
+    def __repr__(self):
+        """
+            String representation of how to use the DeleteCalculation Command
+
+            @return: String representation how to use the DeleteCalculation Command
+        """
+        return "deleteCalculation <calculation#>"

@@ -10,13 +10,13 @@ from app.calculator import Calculator
 
 
 @pytest.fixture(scope="class", autouse=True)
-def setup_calc_history_path_location():
+def setup_tests():
     """Sets up the csv files needed to run the tests"""
-    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
+    singleton.CALC_HISTORY_FILE_PATH = "tests/csv_test_data_output.csv"
     yield
 
-    if os.path.exists(singleton.calc_history_path_location):
-        os.remove(singleton.calc_history_path_location)
+    if os.path.exists(singleton.CALC_HISTORY_FILE_PATH):
+        os.remove(singleton.CALC_HISTORY_FILE_PATH)
 
 def test_add():
     '''Test that addition function works '''    

@@ -20,15 +20,22 @@ class Command(ABC):
 
             @param user_input: a list of strings specified by the user, expectation is that there should be zero to two elements in the list
         """
-        pass # pragma: no cover
+
+    def __repr__(self):
+        """
+            String representation of how to use the Command
+
+            @return: String representation how to use the Command
+        """
 
 class CommandHandler:
     """
-    This class will be used by the application to register and execute all REPL commands.
-    Implements the Singleton Design Pattern.
+        This class will be used by the application to register and execute all REPL commands.
+        Implements the Singleton Design Pattern.
     """
     _instance = None
 
+    # The two methods below ensure that the CommandHandler class is a singleton
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(CommandHandler, cls).__new__(cls, *args, **kwargs)
@@ -49,10 +56,10 @@ class CommandHandler:
 
     def remove_command(self, command_name):
         """
-        Removes a command from the CommandHandler's commands dictionary
-        Only used for test clean up
+            Removes a command from the CommandHandler's commands dictionary
+            Only used for test clean up
 
-        @param command_name: the name of the command to remove
+            @param command_name: the name of the command to remove
         """
         try:
             del self.commands[command_name]
@@ -64,9 +71,14 @@ class CommandHandler:
         """
             Prints all the commands registered in the CommandHandler
         """
+        def split_string(string):
+            return string.split() + ['', '', ''][:3]
         print("Commands:")
-        for key in self.commands:
-            print(f"- {key}")
+        print(f"  {'Command':17} {'Parameter 1':15} Parameter 2")
+        for command in self.commands.values():
+            parts = split_string(command.__repr__())
+            formatted_string = f"- {parts[0]:17} {parts[1]:15} {parts[2]}"
+            print(formatted_string)
 
     def execute_command(self, user_input: List[str]):
         """
@@ -77,14 +89,10 @@ class CommandHandler:
         """
         try:
             self.commands[user_input[0]].execute(user_input[1:3])
-            logging.info("Command called %s with arguments %s", user_input[0], ic.format(user_input[1:]))
+            logging.info("Command called '%s' with arguments %s", user_input[0], ic.format(user_input[1:]))
         except IndexError:
-            print("Invalid number of arguments for specified command")
+            print(f"Improper usage of command\nCorrect usage: {self.commands[user_input[0]].__repr__()}")
             logging.error("Index Error | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))
-        except ValueError:
-            print("Cannot divide by zero")
-            logging.error("Value Error | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))
-            logging.warning("Divide by zero added to Calculator History")
         except InvalidOperation:
             print(f"Invalid number input: one of {user_input[1:3]} is not a valid number.")
             logging.error("InvalidOperation | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))

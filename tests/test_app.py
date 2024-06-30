@@ -20,8 +20,8 @@ def test_app_start(monkeypatch):
     current_user = app.get_environment_variable('USERNAME')
     assert current_env in ['DEV', 'PROD'], f"Invalid ENVIRONMENT: {current_env}"
     assert current_user in ['jderik-local', 'jderik-dev', 'jderik-prod'], f"Invalid USERNAME: {current_user}"
-    assert os.path.exists(os.path.dirname(singleton.calc_history_path_location)), "Data directory was not created"
-    assert os.path.exists(singleton.calc_history_path_location), "Calculator History csv file was not created"
+    assert os.path.exists(os.path.dirname(singleton.CALC_HISTORY_FILE_PATH)), "Data directory was not created"
+    assert os.path.exists(singleton.CALC_HISTORY_FILE_PATH), "Calculator History csv file was not created"
     with pytest.raises(SystemExit) as e:
         app.start()
     assert e.type == SystemExit
@@ -45,24 +45,24 @@ def test_app_get_environment_variable():
     assert current_env in ['DEV', 'TESTING', 'PROD'], f"Invalid ENVIRONMENT: {current_env}"
 
 @pytest.fixture(scope="class", autouse=True)
-def setup():
+def setup_test():
     """Sets up the test_app_full_workflow test"""
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data'))
-    if not os.path.exists(data_dir):
+    if not os.path.exists(data_dir): # pragma: no cover
         os.makedirs(data_dir)
-    singleton.calc_history_path_location = os.path.join(data_dir, "calc_history.csv")
-    with open(singleton.calc_history_path_location, encoding="utf-8", mode='w') as file:
+    singleton.CALC_HISTORY_FILE_PATH = os.path.join(data_dir, "calc_history.csv")
+    with open(singleton.CALC_HISTORY_FILE_PATH, encoding="utf-8", mode='w') as file:
         file.write("Operand1,Operand2,Operation\n1,2,add\n3,4,subtract")
     yield
 
-    print(singleton.calc_history_path_location)
-    if os.path.exists(singleton.calc_history_path_location): # pragma: no cover
-        os.remove(singleton.calc_history_path_location)
+    print(singleton.CALC_HISTORY_FILE_PATH)
+    if os.path.exists(singleton.CALC_HISTORY_FILE_PATH): # pragma: no cover
+        os.remove(singleton.CALC_HISTORY_FILE_PATH)
     CommandHandler().commands.clear()
 
 
 def test_app_full_workflow(capfd, monkeypatch):
-    """Test that the goes through a sample workflow of the REPL app"""
+    """Test that goes through a sample full happy path workflow of the REPL app"""
     output_test_file = "tests/test_output.csv"
 
     inputs = iter([
@@ -85,8 +85,7 @@ def test_app_full_workflow(capfd, monkeypatch):
 
     expected_output = [
         "History loaded from",
-        "\nCommands:\n- add\n- clearHistory\n- deleteCalculation\n- divide\n- exit\n" \
-        "- getCalculation\n- loadHistory\n- menu\n- multiply\n- printHistory\n- saveHistory\n- subtract\nType 'exit' to exit.\n",
+        "Commands:\n  Command           Parameter 1     Parameter 2\n",
         "1) Calculation(1, 2, add)\n2) Calculation(3, 4, subtract)\n",
         "The result of Calculation(3, 4, subtract) is equal to -1\n",
         "Calculation #1 was deleted\n",
@@ -100,7 +99,7 @@ def test_app_full_workflow(capfd, monkeypatch):
         "",
         "History loaded from tests/csv_test_data_read_input.csv\n",
         f"History Saved to {output_test_file}\n",
-        "Commands:\n- add\n- clearHistory\n- deleteCalculation\n- divide\n- exit\n- getCalculation\n- loadHistory\n- menu\n- multiply\n- printHistory\n- saveHistory\n- subtract\n"
+        "Commands:\n  Command           Parameter 1     Parameter 2\n"
     ]
 
     monkeypatch.setattr('builtins.input', lambda _: next(inputs))

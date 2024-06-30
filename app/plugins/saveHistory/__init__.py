@@ -21,3 +21,11 @@ class SaveHistoryCommand(Command):
         CalculatorHistory.save_to_csv(user_input[0])
         logging.debug("History Saved to %s", user_input[0])
         print(f"History Saved to {user_input[0]}")
+
+    def __repr__(self):
+        """
+            String representation of how to use the SaveHistory Command
+
+            @return: String representation how to use the SaveHistory Command
+        """
+        return "saveHistory <csvFile>"

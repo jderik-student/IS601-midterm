@@ -23,8 +23,8 @@ def generate_test_data(num_records):
     for _ in range(num_records):
         a = Decimal(fake.random_number(digits=2))
         b = Decimal(fake.random_number(digits=2))
-        operation_name = fake.random_element(elements=list(singleton.operation_mappings.keys()))
-        operation_func = singleton.operation_mappings[operation_name]
+        operation_name = fake.random_element(elements=list(singleton.OPERATION_MAPPINGS.keys()))
+        operation_func = singleton.OPERATION_MAPPINGS[operation_name]
 
         if operation_func.__name__ == "divide":
             b = Decimal('1') if b == Decimal('0')  else b

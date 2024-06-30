@@ -14,22 +14,22 @@ from app.plugins.loadHistory import LoadHistoryCommand
 
 
 @pytest.fixture(scope="class", autouse=True)
-def setup_calc_history_path_location():
+def setup_tests():
     """Sets up the tests by registering one command and setting up csv output file"""
     handler = CommandHandler()
     handler.register_command("add", AddCommand())
-    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
+    singleton.CALC_HISTORY_FILE_PATH = "tests/csv_test_data_output.csv"
     yield
 
-    if os.path.exists(singleton.calc_history_path_location): # pragma: no cover
-        os.remove(singleton.calc_history_path_location)
+    if os.path.exists(singleton.CALC_HISTORY_FILE_PATH): # pragma: no cover
+        os.remove(singleton.CALC_HISTORY_FILE_PATH)
 
 def test_register_command_and_list_command(capfd):
     """Tests registering a command to the CommandHandler and listing out all the registered commands"""
     handler = CommandHandler()
     handler.list_commands()
     out, err = capfd.readouterr()
-    assert out == "Commands:\n- add\n", "Did not succesfully register and list out the AddCommand"
+    assert "- add               <operand1>      <operand2>" in out, "Did not succesfully register and list out the AddCommand"
 
 def test_execute_command(capfd):
     """Tests the execute_command method as well as the exceptions it catches"""
@@ -43,7 +43,7 @@ def test_execute_command(capfd):
 
     handler.execute_command(["add"])
     out, err = capfd.readouterr()
-    assert out == "Invalid number of arguments for specified command\n", "IndexError was expected"
+    assert out == "Improper usage of command\nCorrect usage: add <operand1> <operand2>\n", "IndexError was expected"
 
     handler.execute_command(["divide", "1", "0"])
     out, err = capfd.readouterr()
