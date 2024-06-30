@@ -30,7 +30,7 @@ class DeleteCalculationCommand(Command):
         except KeyError:
             print(f"Invalid Calculation Number: {user_input[0]}")
             logging.error("IndexError: Failed to delete calculation at index: %s", index)
-            logging.debug("Number of Calculations in history: %s", len(CalculatorHistory.get_history()))
+            logging.debug("Number of Calculations in history at time of delete command call: %s", len(CalculatorHistory.get_history()))
         except ValueError:
             print(f"{user_input[0]} is not a valid number")
             logging.error("ValueError: %s is not a valid number", user_input[0])

@@ -27,6 +27,7 @@ class App:
         '''
         os.makedirs('logs', exist_ok=True)
         self.configure_logging()
+
         load_dotenv()
         self.settings = self.load_environment_variables()
         if self.get_environment_variable("ENVIRONMENT") == "DEV": # pragma: no cover
@@ -35,27 +36,26 @@ class App:
             for handler in logger.handlers:
                 handler.setLevel(logging.DEBUG)
             logging.debug("Logging level set to DEBUG")
+
         data_dir = os.path.join(os.getcwd(), 'data')
         if not os.path.exists(data_dir):
             os.makedirs(data_dir)
-            logging.info("The directory '%s is created", data_dir)
-
+            logging.warning("The directory '%s' was not found, program created the required directory", data_dir)
         elif not os.access(data_dir, os.W_OK):
             logging.error("The directory '%s' is not writable.", data_dir)
             sys.exit("Exiting: The directory '%s' is not writable.", data_dir)
 
         calc_history_file = self.get_environment_variable('CSVFILENAME')
-        path_abs_hist_folder = os.path.abspath(data_dir)
-        path_abs_hist_file = os.path.join(path_abs_hist_folder, calc_history_file)
-        singleton.calc_history_path_location = path_abs_hist_file
-        logging.debug("Calculator History File Absolute Path: %s", path_abs_hist_file)
+        path_abs_hist_file = os.path.join(os.path.abspath(data_dir), calc_history_file)
+        singleton.CALC_HISTORY_FILE_PATH = os.path.join(os.path.abspath(data_dir), calc_history_file)
+        logging.info("Calculator History File Absolute Path: %s", path_abs_hist_file)
 
-        if not os.path.exists(singleton.calc_history_path_location):
-            with open(singleton.calc_history_path_location,encoding="utf-8", mode='w') as file:
+        if not os.path.exists(singleton.CALC_HISTORY_FILE_PATH):
+            with open(singleton.CALC_HISTORY_FILE_PATH,encoding="utf-8", mode='w') as file:
                 file.write("Operand1,Operand2,Operation")
-                logging.info("Calculator History csv file was not found, created file at %s", singleton.calc_history_path_location)
+                logging.warning("Calculator History csv file was not found, program created file at %s", singleton.CALC_HISTORY_FILE_PATH)
         else:
-            logging.info("Calculator History csv exists at %s", singleton.calc_history_path_location)
+            logging.info("Calculator History csv exists at %s", singleton.CALC_HISTORY_FILE_PATH)
 
         self.command_handler = CommandHandler()
         logging.info("Command Handler Initialized")
@@ -84,7 +84,7 @@ class App:
         '''
             Returns the specified environment variable 
         '''
-        logging.info(self.settings.get(env_var, None))
+        logging.info("Retrieved Environment Variable: %s", self.settings.get(env_var, None))
         return self.settings.get(env_var, None)
 
     def load_plugins(self):
@@ -94,7 +94,7 @@ class App:
         plugins_package = 'app.plugins'
         plugins_path = plugins_package.replace('.', '/')
         if not os.path.exists(plugins_path): # pragma: no cover
-            logging.warning("Plugins directory '%s' not found.", plugins_path)
+            logging.error("Plugins directory '%s' not found.", plugins_path)
             print("Plugins directory '%s' not found.", plugins_path)
             sys.exit(0)
         for _, plugin_name, is_pkg in pkgutil.iter_modules([plugins_path]):
@@ -109,9 +109,9 @@ class App:
                                     self.command_handler.register_command(plugin_name, item(self.command_handler))
                                 else:
                                     self.command_handler.register_command(plugin_name, item())
-                                logging.info("Command %s from plugin %s registered.", plugin_name, plugin_module)
+                                logging.info("Command '%s' from plugin '%s' registered.", plugin_name, plugin_module)
                             except Exception as e: # pragma: no cover
-                                logging.error("Failed to import plugin %s: %s", plugin_name, ic.format(e))
+                                logging.warning("Failed to import plugin '%s': %s", plugin_name, ic.format(e))
                     except TypeError:
                         continue  # If item is not a class or unrelated class, just ignore
 
@@ -121,10 +121,10 @@ class App:
         '''
         self.load_plugins()
         try:
-            CalculatorHistory.load_history_from_csv(singleton.calc_history_path_location)
+            CalculatorHistory.load_history_from_csv(singleton.CALC_HISTORY_FILE_PATH)
         except Exception as e:
-            print(f"Failed to load from {singleton.calc_history_path_location}")
-            logging.error("Failed to load from %s | Error: %s", singleton.calc_history_path_location, e)
+            print(f"Failed to load from {singleton.CALC_HISTORY_FILE_PATH}")
+            logging.error("Failed to load from %s | Error: %s", singleton.CALC_HISTORY_FILE_PATH, e)
         logging.info("Application Started")
         self.command_handler.list_commands()
         print("Type 'exit' to exit.")

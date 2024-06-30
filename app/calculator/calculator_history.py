@@ -102,11 +102,11 @@ class CalculatorHistory:
         df = pd.read_csv(file_path)
         try:
             for _, row in df.iterrows():
-                calc = Calculation.create(Decimal(row["Operand1"]), Decimal(row["Operand2"]), singleton.operation_mappings[row["Operation"]])
+                calc = Calculation.create(Decimal(row["Operand1"]), Decimal(row["Operand2"]), singleton.OPERATION_MAPPINGS[row["Operation"]])
                 hist.append(calc)
             cls.dataframe = df
             cls.history = hist
-            df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+            df.to_csv(singleton.CALC_HISTORY_FILE_PATH, mode= "w", index=  False, header = True)
             print(f"History loaded from {file_path}")
             logging.info("History loaded from %s", file_path)
         except KeyError as e:

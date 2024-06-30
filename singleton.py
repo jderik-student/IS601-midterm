@@ -5,8 +5,8 @@
 from app.calculator.operations import add, subtract, multiply, divide
 
 
-calc_history_path_location = ""
-operation_mappings = {
+CALC_HISTORY_FILE_PATH = ""
+OPERATION_MAPPINGS = {
         'add': add,
         'subtract': subtract,
         'multiply': multiply,

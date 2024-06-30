@@ -17,7 +17,7 @@ class DataframeManipulator(DataManipulationStrategy):
         '''
         df = CalculatorHistory.get_dataframe()
         df.loc[len(df)] = {"Operation": entry.operation.__name__, "Operand1": float(entry.a), "Operand2": float(entry.b)}
-        df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+        df.to_csv(singleton.CALC_HISTORY_FILE_PATH, mode= "w", index=  False, header = True)
 
     def clear_database(self):
         '''
@@ -25,7 +25,7 @@ class DataframeManipulator(DataManipulationStrategy):
         '''
         df = CalculatorHistory.get_dataframe()
         df.drop(df.index, inplace=True)
-        df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+        df.to_csv(singleton.CALC_HISTORY_FILE_PATH, mode= "w", index=  False, header = True)
 
     def delete_entry_at_index(self, index):
         '''
@@ -34,4 +34,4 @@ class DataframeManipulator(DataManipulationStrategy):
         '''
         df = CalculatorHistory.get_dataframe()
         df.drop(index=index, inplace=True)
-        df.to_csv(singleton.calc_history_path_location, mode= "w", index=  False, header = True)
+        df.to_csv(singleton.CALC_HISTORY_FILE_PATH, mode= "w", index=  False, header = True)

@@ -22,11 +22,11 @@ def setup_history():
     CalculatorHistory.append(Calculation.create(Decimal('3'), Decimal('4'), subtract), MemoryDataManipulator())
     CalculatorHistory.append(Calculation.create(Decimal('5'), Decimal('6'), multiply), MemoryDataManipulator())
     CalculatorHistory.append(Calculation.create(Decimal('7'), Decimal('8'), divide), MemoryDataManipulator())
-    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
+    singleton.CALC_HISTORY_FILE_PATH = "tests/csv_test_data_output.csv"
     yield
 
-    if os.path.exists(singleton.calc_history_path_location):
-        os.remove(singleton.calc_history_path_location)
+    if os.path.exists(singleton.CALC_HISTORY_FILE_PATH):
+        os.remove(singleton.CALC_HISTORY_FILE_PATH)
 
 def test_append(setup):
     """Test appending a Calculation to the history list"""
@@ -100,7 +100,7 @@ def test_load_from_csv(setup):
     assert second_calculation["Operand1"] == Decimal('3') and second_calculation["Operand2"] == Decimal('4') and second_calculation["Operation"] == "subtract", "Failed to load the Calculation at row 2 of the dataframe"
     assert third_calculation["Operand1"] == Decimal('5') and third_calculation["Operand2"] == Decimal('6') and third_calculation["Operation"] == "multiply", "Failed to load Calculation at row 3 of the dataframe"
     assert fourth_calculation["Operand1"] == Decimal('7') and fourth_calculation["Operand2"] == Decimal('8') and fourth_calculation["Operation"] == "divide", "Failed to load Calculation at row 4 of the dataframe"
-    assert pd.read_csv("tests/csv_test_data_read_input.csv").equals(pd.read_csv(singleton.calc_history_path_location)), "Calc_history.csv write failed"
+    assert pd.read_csv("tests/csv_test_data_read_input.csv").equals(pd.read_csv(singleton.CALC_HISTORY_FILE_PATH)), "Calc_history.csv write failed"
 
 def test_delete_history(setup):
     """Test deleting the entire calculation history"""

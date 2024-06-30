@@ -20,8 +20,8 @@ def test_app_start(monkeypatch):
     current_user = app.get_environment_variable('USERNAME')
     assert current_env in ['DEV', 'PROD'], f"Invalid ENVIRONMENT: {current_env}"
     assert current_user in ['jderik-local', 'jderik-dev', 'jderik-prod'], f"Invalid USERNAME: {current_user}"
-    assert os.path.exists(os.path.dirname(singleton.calc_history_path_location)), "Data directory was not created"
-    assert os.path.exists(singleton.calc_history_path_location), "Calculator History csv file was not created"
+    assert os.path.exists(os.path.dirname(singleton.CALC_HISTORY_FILE_PATH)), "Data directory was not created"
+    assert os.path.exists(singleton.CALC_HISTORY_FILE_PATH), "Calculator History csv file was not created"
     with pytest.raises(SystemExit) as e:
         app.start()
     assert e.type == SystemExit
@@ -50,14 +50,14 @@ def setup():
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data'))
     if not os.path.exists(data_dir):
         os.makedirs(data_dir)
-    singleton.calc_history_path_location = os.path.join(data_dir, "calc_history.csv")
-    with open(singleton.calc_history_path_location, encoding="utf-8", mode='w') as file:
+    singleton.CALC_HISTORY_FILE_PATH = os.path.join(data_dir, "calc_history.csv")
+    with open(singleton.CALC_HISTORY_FILE_PATH, encoding="utf-8", mode='w') as file:
         file.write("Operand1,Operand2,Operation\n1,2,add\n3,4,subtract")
     yield
 
-    print(singleton.calc_history_path_location)
-    if os.path.exists(singleton.calc_history_path_location): # pragma: no cover
-        os.remove(singleton.calc_history_path_location)
+    print(singleton.CALC_HISTORY_FILE_PATH)
+    if os.path.exists(singleton.CALC_HISTORY_FILE_PATH): # pragma: no cover
+        os.remove(singleton.CALC_HISTORY_FILE_PATH)
     CommandHandler().commands.clear()
 
 

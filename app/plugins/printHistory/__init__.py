@@ -17,12 +17,12 @@ class PrintHistoryCommand(Command):
 
             @param user_input: not used by this method, added to adhere to Liskov substitution principle
         """
-        logging.debug("Calculator History: %s", ic.format(CalculatorHistory.get_history()))
         i = 1
         for calc in CalculatorHistory.get_history():
             print(f"{i}) {calc}")
             i += 1
-    
+        logging.debug("Calculator History: %s", ic.format(CalculatorHistory.get_history()))
+
     def __repr__(self):
         """
             String representation of how to use the PrintHistory Command

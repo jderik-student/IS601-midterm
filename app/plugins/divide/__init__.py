@@ -7,6 +7,7 @@ from decimal import Decimal
 import logging
 from app.commands import Command
 from app.calculator import Calculator
+from icecream import ic
 
 class DivideCommand(Command):
     """
@@ -20,9 +21,14 @@ class DivideCommand(Command):
         """
         operand_1 = Decimal(user_input[0])
         operand_2 = Decimal(user_input[1])
-        result = Calculator.divide(operand_1, operand_2)
-        logging.debug("The result of %s divided by %s is equal to %s", operand_1, operand_2, result)
-        print(f"The result of {operand_1} divided by {operand_2} is equal to {result}")
+        try:
+            result = Calculator.divide(operand_1, operand_2)
+            logging.debug("The result of %s divided by %s is equal to %s", operand_1, operand_2, result)
+            print(f"The result of {operand_1} divided by {operand_2} is equal to {result}")
+        except ValueError:
+            print("Cannot divide by zero")
+            logging.error("Value Error | Command: 'divide' Arguments: %s", ic.format(user_input))
+            logging.warning("Divide by zero added to Calculator History")
 
     def __repr__(self):
         """

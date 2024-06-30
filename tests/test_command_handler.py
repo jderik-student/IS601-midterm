@@ -14,15 +14,15 @@ from app.plugins.loadHistory import LoadHistoryCommand
 
 
 @pytest.fixture(scope="class", autouse=True)
-def setup_calc_history_path_location():
+def setup_CALC_HISTORY_FILE_PATH():
     """Sets up the tests by registering one command and setting up csv output file"""
     handler = CommandHandler()
     handler.register_command("add", AddCommand())
-    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
+    singleton.CALC_HISTORY_FILE_PATH = "tests/csv_test_data_output.csv"
     yield
 
-    if os.path.exists(singleton.calc_history_path_location): # pragma: no cover
-        os.remove(singleton.calc_history_path_location)
+    if os.path.exists(singleton.CALC_HISTORY_FILE_PATH): # pragma: no cover
+        os.remove(singleton.CALC_HISTORY_FILE_PATH)
 
 def test_register_command_and_list_command(capfd):
     """Tests registering a command to the CommandHandler and listing out all the registered commands"""
