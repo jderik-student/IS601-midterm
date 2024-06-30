@@ -1,6 +1,7 @@
 # pylint: disable=unnecessary-dunder-call, invalid-name
 """
-    This code defines a Calculator that can add, subtract, multiply, and divide on Decimal numbers. 
+    This code defines a Calculator that can add, subtract, multiply, and divide on Decimal numbers
+    This Calculator also keeps history of past calculations.
 """
 
 from decimal import Decimal

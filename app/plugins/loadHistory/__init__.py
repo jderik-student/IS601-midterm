@@ -19,3 +19,11 @@ class LoadHistoryCommand(Command):
             @param user_input: csv file to load history from
         """
         CalculatorHistory.load_history_from_csv(user_input[0])
+
+    def __repr__(self):
+        """
+            String representation of how to use the LoadHistory Command
+
+            @return: String representation how to use the LoadHistory Command
+        """
+        return "loadHistory <csvFile>"

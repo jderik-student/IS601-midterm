@@ -26,13 +26,13 @@ from app.plugins.subtract import SubtractCommand
 
 
 @pytest.fixture(scope="class", autouse=True)
-def setup_calc_history_path_location():
-    """Sets up the tests by registering one command and setting up csv output file"""
-    singleton.calc_history_path_location = "tests/csv_test_data_output.csv"
+def setup_tests():
+    """Sets up the tests by setting up csv output file"""
+    singleton.CALC_HISTORY_FILE_PATH = "tests/csv_test_data_output.csv"
     yield
 
-    if os.path.exists(singleton.calc_history_path_location):
-        os.remove(singleton.calc_history_path_location)
+    if os.path.exists(singleton.CALC_HISTORY_FILE_PATH):
+        os.remove(singleton.CALC_HISTORY_FILE_PATH)
 
 def test_add_command(capfd):
     """Tests the AddCommand"""
@@ -104,7 +104,7 @@ def test_clear_history_command(capfd):
     assert out == "History Cleared\n", "The ClearHistoryCommand should have been deleted the history"
     assert len(CalculatorHistory.get_history()) == 0, "The History List should have been cleared"
     assert len(CalculatorHistory.get_dataframe()) == 0, "The Calculator History Dataframe should have been cleared"
-    assert len(pd.read_csv(singleton.calc_history_path_location)) == 0, "The CSV file should been cleared"
+    assert len(pd.read_csv(singleton.CALC_HISTORY_FILE_PATH)) == 0, "The CSV file should been cleared"
 
 def test_load_history_command(capfd):
     """Tests the LoadHistoryCommand"""
@@ -129,7 +129,7 @@ def test_load_history_command(capfd):
     assert second_calculation.a == Decimal('3') and second_calculation.b == Decimal('4') and second_calculation.operation.__name__ == "subtract", "Failed to load the Calculation at index 1 in History List"
     assert third_calculation.a == Decimal('5') and third_calculation.b == Decimal('6') and third_calculation.operation.__name__ == "multiply", "Failed to load Calculation at index 2 in History List"
     assert fourth_calculation.a == Decimal('7') and fourth_calculation.b == Decimal('8') and fourth_calculation.operation.__name__ == "divide", "Failed to load Calculation at index 3 in History List"
-    assert pd.read_csv("tests/csv_test_data_read_input.csv").equals(pd.read_csv(singleton.calc_history_path_location)), "Calc_history.csv write failed"
+    assert pd.read_csv("tests/csv_test_data_read_input.csv").equals(pd.read_csv(singleton.CALC_HISTORY_FILE_PATH)), "Calc_history.csv write failed"
 
 def test_save_history_command(capfd):
     """Tests the SaveHistoryCommand"""
@@ -138,10 +138,10 @@ def test_save_history_command(capfd):
                          'Operation': ['add', 'subtract', 'add']})
     CalculatorHistory.dataframe = df
     command = SaveHistoryCommand()
-    command.execute([singleton.calc_history_path_location])
+    command.execute([singleton.CALC_HISTORY_FILE_PATH])
     out, err = capfd.readouterr()
-    assert out == f"History Saved to {singleton.calc_history_path_location}\n", "The ClearHistoryCommand should have been deleted the history"
-    CalculatorHistory.load_history_from_csv(singleton.calc_history_path_location)
+    assert out == f"History Saved to {singleton.CALC_HISTORY_FILE_PATH}\n", "The ClearHistoryCommand should have been deleted the history"
+    CalculatorHistory.load_history_from_csv(singleton.CALC_HISTORY_FILE_PATH)
     first_calculation = CalculatorHistory.get_ith_calculation(0)
     second_calculation = CalculatorHistory.get_ith_calculation(1)
     third_calculation = CalculatorHistory.get_ith_calculation(2)
@@ -152,13 +152,13 @@ def test_save_history_command(capfd):
 def test_menu_command(capfd):
     """Tests the MenuCommand"""
     handler = CommandHandler()
-    handler.register_command("Command1", None)
-    handler.register_command("Command2", None)
-    handler.register_command("Command3", None)
+    handler.register_command("add", AddCommand())
+    handler.register_command("deleteCalculation", DeleteCalculationCommand())
+    handler.register_command("printHistory", PrintHistoryCommand())
     command = MenuCommand(handler)
     command.execute([])
     out, err = capfd.readouterr()
-    assert out == "Commands:\n- Command1\n- Command2\n- Command3\n", "The MenuCommand should have printed three commands"
-    handler.remove_command("Command1")
-    handler.remove_command("Command2")
-    handler.remove_command("Command3")
+    assert "Commands:\n  Command           Parameter 1     Parameter 2\n- add               <operand1>      <operand2>\n- deleteCalculation <calculation#>  \n- printHistory" in out, "The MenuCommand should have printed three commands"
+    handler.remove_command("add")
+    handler.remove_command("deleteCalculation")
+    handler.remove_command("printHistory")
