@@ -32,17 +32,6 @@ class CalculatorHistory:
         dataManipulationStrategy.append(calculation)
 
     @classmethod
-    def get_last_calculation(cls) -> Calculation:
-        """
-            Returns the Calculation at the end of the history list.
-
-           @return: the most recent Calculation (the Calculation at the end of the history list), returns None if the history is empty
-        """
-        if cls.history:
-            return cls.history[-1]
-        return None
-
-    @classmethod
     def get_history(cls) -> List[Calculation]:
         """
             Returns the entire history list
@@ -77,16 +66,6 @@ class CalculatorHistory:
            @param DataManipulationStrategy: the desired DataManipulation Strategy to define where to perform the delete
         """
         dataManipulationStrategy.delete_entry_at_index(index=index)
-
-    @classmethod
-    def find_by_opreation(cls, operation_name: str) -> List[Calculation]:
-        """
-           Finds and returns a list of all the Calculations with a specific operation
-
-           @param operation_name: the desired operation to find
-           @return: a list of Calculations with the speicified operation type
-        """
-        return [calc for calc in cls.history if calc.operation.__name__ == operation_name]
 
     @classmethod
     def get_ith_calculation(cls, i: int) -> Calculation:

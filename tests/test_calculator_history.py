@@ -33,18 +33,7 @@ def test_append(setup):
     calculation = Calculation.create(Decimal('9'), Decimal('10'), add)
     CalculatorHistory.append(calculation, MemoryDataManipulator())
 
-    assert CalculatorHistory.get_last_calculation() == calculation, "Failed to append the Calculation to the history list"
-
-def test_get_last_calculation(setup):
-    """Test getting the most recent calculation in the history list"""
-    last_calculation = CalculatorHistory.get_last_calculation()
-    assert last_calculation.a == Decimal('7') and last_calculation.b == Decimal('8') and last_calculation.operation.__name__ == "divide", "Failed to get the correct most recent Calculation"
-
-def test_get_last_calculation_with_empty_history():
-    """Test getting the most recent calculation in the history with an empty history list"""
-    CalculatorHistory.delete_history(MemoryDataManipulator())
-    last_calculation = CalculatorHistory.get_last_calculation()
-    assert last_calculation is None, "Expected None to be returned"
+    assert CalculatorHistory.get_history()[-1] == calculation, "Failed to append the Calculation to the history list"
 
 def test_get_history(setup):
     """Test getting the entire calculation history list"""
@@ -56,18 +45,6 @@ def test_delete_calculation_at_index(setup):
     second_calculation = CalculatorHistory.get_ith_calculation(1)
     assert len(CalculatorHistory.get_history()) == 3, "History list does not contain the expected number of calculations (3)"
     assert second_calculation.a == Decimal('5') and second_calculation.b == Decimal('6') and second_calculation.operation.__name__ == "multiply", "Failed to delete the correct Calculation in history list"
-
-def test_find_by_operation(setup):
-    """Test getting the history list by each opearation"""
-    add_operation = CalculatorHistory.find_by_opreation("add")
-    subtract_operation = CalculatorHistory.find_by_opreation("subtract")
-    multiply_operation = CalculatorHistory.find_by_opreation("multiply")
-    divide_operation = CalculatorHistory.find_by_opreation("divide")
-
-    assert len(add_operation) == 1, "Did not find the correct number of calculations with the add operation"
-    assert len(subtract_operation) == 1, "Did not find the correct number of calculations with the subtract operation"
-    assert len(multiply_operation) == 1, "Did not find the correct number of calculations with the mulitply operation"
-    assert len(divide_operation) == 1, "Did not find the correct number of calculations with the divide operation"
 
 def test_get_ith_calculation(setup):
     """Test getting the ith Calculation in the history"""
