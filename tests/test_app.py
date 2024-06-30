@@ -5,6 +5,7 @@
 import os
 from unittest import mock
 import logging
+from dotenv import load_dotenv
 import pandas as pd
 import pytest
 
@@ -50,7 +51,8 @@ def setup_test():
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data'))
     if not os.path.exists(data_dir): # pragma: no cover
         os.makedirs(data_dir)
-    singleton.CALC_HISTORY_FILE_PATH = os.path.join(data_dir, "calc_history.csv")
+    load_dotenv()
+    singleton.CALC_HISTORY_FILE_PATH = os.path.join(data_dir, os.getenv('CSVFILENAME'))
     with open(singleton.CALC_HISTORY_FILE_PATH, encoding="utf-8", mode='w') as file:
         file.write("Operand1,Operand2,Operation\n1,2,add\n3,4,subtract")
     yield
