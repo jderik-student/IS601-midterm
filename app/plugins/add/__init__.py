@@ -21,6 +21,7 @@ class AddCommand(Command):
         operand_1 = Decimal(user_input[0])
         operand_2 = Decimal(user_input[1])
         result = Calculator.add(operand_1, operand_2)
+        logging.debug("Appended '%s,%s,add' to CalculatorHistory", operand_1, operand_2)
         logging.debug("The result of %s plus %s is equal to %s", operand_1, operand_2, result)
         print(f"The result of {operand_1} plus {operand_2} is equal to {result}")
 

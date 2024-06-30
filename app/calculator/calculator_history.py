@@ -24,16 +24,17 @@ class CalculatorHistory:
     @classmethod
     def append(cls, calculation: Calculation, dataManipulationStrategy: DataManipulationStrategy):
         """
-            Adds a Calculation to the history, dataframe, and csv file
+            Adds a Calculation to the history or dataframe and csv file
 
             @param calculation: the Calculation to add to the history
+            @param DataManipulationStrategy: the desired DataManipulation Strategy to define where to perform the append
         """
         dataManipulationStrategy.append(calculation)
 
     @classmethod
     def get_last_calculation(cls) -> Calculation:
         """
-            Returns the Calculation at the end of the history list from the list.
+            Returns the Calculation at the end of the history list.
 
            @return: the most recent Calculation (the Calculation at the end of the history list), returns None if the history is empty
         """
@@ -55,21 +56,25 @@ class CalculatorHistory:
         """
             Returns the entire history dataframe
 
-           @return: a list of all Calculations in the history
+           @return: the CalculatorHistory's dataframe
         """
         return cls.dataframe
 
     @classmethod
     def delete_history(cls, dataManipulationStrategy: DataManipulationStrategy):
         """
-           Clears all Calculations stored in the history list, dataframe, and in the csv file
+           Clears all Calculations stored in the history list or dataframe and the csv file
+
+           @param DataManipulationStrategy: the desired DataManipulation Strategy to define where to perform the delete
         """
         dataManipulationStrategy.clear_database()
 
     @classmethod
     def delete_calculation_at_index(cls, index, dataManipulationStrategy: DataManipulationStrategy):
         """
-           Clears the Calculation at the specified index in the history list, dataframe, and in the csv file
+           Clears the Calculation at the specified index in the history list or dataframe and the csv file
+
+           @param DataManipulationStrategy: the desired DataManipulation Strategy to define where to perform the delete
         """
         dataManipulationStrategy.delete_entry_at_index(index=index)
 
@@ -97,6 +102,8 @@ class CalculatorHistory:
     def load_history_from_csv(cls, file_path: str):
         """
             Reads in a csv file and stores the information into the dataframe and history list
+
+            @param file_path: the desired csv file's path 
         """
         hist = []
         df = pd.read_csv(file_path)
@@ -122,5 +129,7 @@ class CalculatorHistory:
     def save_to_csv(cls, file_path):
         """
             Saves the stored dataframe to the specified csv file
+
+            @param file_path: the desired csv file's path 
         """
         cls.dataframe.to_csv(file_path, mode= "w", index=  False, header = True)

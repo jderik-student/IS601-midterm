@@ -83,6 +83,8 @@ class App:
     def get_environment_variable(self, env_var: str = 'ENVIRONMENT'):
         '''
             Returns the specified environment variable 
+
+            @param env_var: name of environment variable to retrieve
         '''
         logging.info("Retrieved Environment Variable: %s", self.settings.get(env_var, None))
         return self.settings.get(env_var, None)

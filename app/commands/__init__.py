@@ -30,11 +30,12 @@ class Command(ABC):
 
 class CommandHandler:
     """
-    This class will be used by the application to register and execute all REPL commands.
-    Implements the Singleton Design Pattern.
+        This class will be used by the application to register and execute all REPL commands.
+        Implements the Singleton Design Pattern.
     """
     _instance = None
 
+    # The two methods below ensure that the CommandHandler class is a singleton
     def __new__(cls, *args, **kwargs):
         if cls._instance is None:
             cls._instance = super(CommandHandler, cls).__new__(cls, *args, **kwargs)
@@ -55,10 +56,10 @@ class CommandHandler:
 
     def remove_command(self, command_name):
         """
-        Removes a command from the CommandHandler's commands dictionary
-        Only used for test clean up
+            Removes a command from the CommandHandler's commands dictionary
+            Only used for test clean up
 
-        @param command_name: the name of the command to remove
+            @param command_name: the name of the command to remove
         """
         try:
             del self.commands[command_name]
@@ -88,14 +89,10 @@ class CommandHandler:
         """
         try:
             self.commands[user_input[0]].execute(user_input[1:3])
-            logging.info("Command called %s with arguments %s", user_input[0], ic.format(user_input[1:]))
+            logging.info("Command called '%s' with arguments %s", user_input[0], ic.format(user_input[1:]))
         except IndexError:
             print(f"Improper usage of command\nCorrect usage: {self.commands[user_input[0]].__repr__()}")
             logging.error("Index Error | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))
-        except ValueError:
-            print("Cannot divide by zero")
-            logging.error("Value Error | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))
-            logging.warning("Divide by zero added to Calculator History")
         except InvalidOperation:
             print(f"Invalid number input: one of {user_input[1:3]} is not a valid number.")
             logging.error("InvalidOperation | Command: %s Arguments: %s", user_input[0], ic.format(user_input[1:]))

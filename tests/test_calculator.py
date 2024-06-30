@@ -10,7 +10,7 @@ from app.calculator import Calculator
 
 
 @pytest.fixture(scope="class", autouse=True)
-def setup_CALC_HISTORY_FILE_PATH():
+def setup_tests():
     """Sets up the csv files needed to run the tests"""
     singleton.CALC_HISTORY_FILE_PATH = "tests/csv_test_data_output.csv"
     yield

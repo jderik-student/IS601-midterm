@@ -47,18 +47,18 @@ def test_get_last_calculation_with_empty_history():
     assert last_calculation is None, "Expected None to be returned"
 
 def test_get_history(setup):
-    """Test getting the entire calculation history"""
+    """Test getting the entire calculation history list"""
     assert len(CalculatorHistory.get_history()) == 4, "History list does not contain the expected number of calculations (4)"
 
 def test_delete_calculation_at_index(setup):
-    """Test getting the entire calculation history"""
+    """Test getting the entire calculation history list"""
     CalculatorHistory.delete_calculation_at_index(1, MemoryDataManipulator())
     second_calculation = CalculatorHistory.get_ith_calculation(1)
     assert len(CalculatorHistory.get_history()) == 3, "History list does not contain the expected number of calculations (3)"
     assert second_calculation.a == Decimal('5') and second_calculation.b == Decimal('6') and second_calculation.operation.__name__ == "multiply", "Failed to delete the correct Calculation in history list"
 
 def test_find_by_operation(setup):
-    """Test getting the history by each opearation"""
+    """Test getting the history list by each opearation"""
     add_operation = CalculatorHistory.find_by_opreation("add")
     subtract_operation = CalculatorHistory.find_by_opreation("subtract")
     multiply_operation = CalculatorHistory.find_by_opreation("multiply")

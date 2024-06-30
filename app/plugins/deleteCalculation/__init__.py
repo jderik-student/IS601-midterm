@@ -18,7 +18,7 @@ class DeleteCalculationCommand(Command):
         """
             Deletes deletes the specified calculation from the Calculator's history
 
-            @param user_input: listed order number of the calculation to delete (shown after from the printHistory)
+            @param user_input: number of the calculation to delete (shown after from the printHistory)
         """
         try:
             index = int(user_input[0]) - 1

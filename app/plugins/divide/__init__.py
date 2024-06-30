@@ -23,6 +23,7 @@ class DivideCommand(Command):
         operand_2 = Decimal(user_input[1])
         try:
             result = Calculator.divide(operand_1, operand_2)
+            logging.debug("Appended '%s,%s,divide' to CalculatorHistory", operand_1, operand_2)
             logging.debug("The result of %s divided by %s is equal to %s", operand_1, operand_2, result)
             print(f"The result of {operand_1} divided by {operand_2} is equal to {result}")
         except ValueError:

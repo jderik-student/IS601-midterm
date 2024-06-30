@@ -45,7 +45,7 @@ def test_app_get_environment_variable():
     assert current_env in ['DEV', 'TESTING', 'PROD'], f"Invalid ENVIRONMENT: {current_env}"
 
 @pytest.fixture(scope="class", autouse=True)
-def setup():
+def setup_test():
     """Sets up the test_app_full_workflow test"""
     data_dir = os.path.abspath(os.path.join(os.getcwd(), 'data'))
     if not os.path.exists(data_dir):
@@ -62,7 +62,7 @@ def setup():
 
 
 def test_app_full_workflow(capfd, monkeypatch):
-    """Test that the goes through a sample workflow of the REPL app"""
+    """Test that goes through a sample full happy path workflow of the REPL app"""
     output_test_file = "tests/test_output.csv"
 
     inputs = iter([

@@ -14,7 +14,7 @@ from app.plugins.loadHistory import LoadHistoryCommand
 
 
 @pytest.fixture(scope="class", autouse=True)
-def setup_CALC_HISTORY_FILE_PATH():
+def setup_tests():
     """Sets up the tests by registering one command and setting up csv output file"""
     handler = CommandHandler()
     handler.register_command("add", AddCommand())

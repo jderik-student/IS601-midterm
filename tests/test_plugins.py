@@ -26,8 +26,8 @@ from app.plugins.subtract import SubtractCommand
 
 
 @pytest.fixture(scope="class", autouse=True)
-def setup_CALC_HISTORY_FILE_PATH():
-    """Sets up the tests by registering one command and setting up csv output file"""
+def setup_tests():
+    """Sets up the tests by setting up csv output file"""
     singleton.CALC_HISTORY_FILE_PATH = "tests/csv_test_data_output.csv"
     yield
 

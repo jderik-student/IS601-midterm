@@ -21,6 +21,7 @@ class MultiplyCommand(Command):
         operand_1 = Decimal(user_input[0])
         operand_2 = Decimal(user_input[1])
         result = Calculator.multiply(operand_1, operand_2)
+        logging.debug("Appended '%s,%s,multiply' to CalculatorHistory", operand_1, operand_2)
         logging.debug("The result of %s times %s is equal to %s", operand_1, operand_2, result)
         print(f"The result of {operand_1} times {operand_2} is equal to {result}")
 

@@ -17,9 +17,9 @@ class GetCalculationCommand(Command):
     def execute(self, user_input):
         """
             Gets the specified calculation from the Calculator's history and computes it
-            This will result in the Calculation not being added to the history again
+            Calculation will not be re-added to the history
 
-            @param user_input: listed order number of the calculation to get and compute (shown after from the printHistory Command)
+            @param user_input: number of the calculation to get and compute (shown after from the printHistory Command)
         """
         try:
             index = int(user_input[0]) - 1
