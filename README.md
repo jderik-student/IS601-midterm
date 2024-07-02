@@ -73,7 +73,7 @@ Relevant Files:
 
 The Factory Method design pattern provides an interface for creating objects in a superclass.
 
-I implemented the FactoryMethod design pattern in the Calculation class by creating a static method to create a new instance of the Calculation object with different operands and operations. This allowed for increased flexibility and structure in the project by allowing for a specific interface to create Calculations with different operations.
+I implemented the FactoryMethod design pattern in the Calculation class by creating a static method to create a new instance of the Calculation object with different operands and operations. This allowed for increased flexibility and structure in the project by allowing for a specific interface to create Calculations with different operations. This also helps to ensure that Calculations are created correctly as the create method will need to be called with the required parameters.
 
 ![screenshot of code snippet in calculation.py](/screenshots/factory_method.png)
 
