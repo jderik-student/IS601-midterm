@@ -27,8 +27,8 @@ class SubtractCommand(Command):
 
     def __repr__(self):
         """
-            String representation of how to use the Sutract Command
+            String representation of how to use the Subtract Command
 
-            @return: String representation how to use the Sutract Command
+            @return: String representation how to use the Subtract Command
         """
-        return "sutract <operand1> <operand2>"
+        return "subtract <operand1> <operand2>"
